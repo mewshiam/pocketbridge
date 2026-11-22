@@ -1,0 +1,51 @@
+name: ios-ci
+
+on:
+  push:
+    branches: [main]
+    paths: ['ios/**', 'protocol/**', '.github/workflows/ios-ci.yml']
+  pull_request:
+    paths: ['ios/**', 'protocol/**', '.github/workflows/ios-ci.yml']
+
+jobs:
+  test:
+    name: XcodeGen + xcodebuild test
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: ios
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: |
+          sudo xcode-select -s /Applications/Xcode_16.app 2>/dev/null || true
+          xcodebuild -version
+
+      - name: Install xcodegen
+        run: brew install xcodegen
+
+      - name: Install swift-protobuf
+        run: brew install swift-protobuf
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Generate Protobuf sources
+        shell: bash
+        working-directory: ..
+        run: bash scripts/gen-proto.sh --ios
+
+      - name: Run tests
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -project PocketBridge.xcodeproj \
+            -scheme PocketBridge \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -derivedDataPath build/DerivedData \
+            | xcbeautify || true
+
+      - name: xcresult summary on failure
+        if: failure()
+        run: xcrun xcresulttool get --legacy --format json --path build/DerivedData/Logs/Test/*.xcresult 2>/dev/null | head -100 || true

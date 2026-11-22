@@ -1,0 +1,49 @@
+# Rust / Cargo
+target/
+**/*.rs.bk
+Cargo.lock.orig
+
+# UniFFI generated bindings
+**/generated/uniffi/
+*.kt.uniffi
+*.swift.uniffi
+
+# Protobuf generated sources
+**/gen/**/proto/
+*.pb.cc
+*.pb.h
+
+# Gradle / Android
+.gradle/
+build/
+app/build/
+local.properties
+*.jks
+*.keystore
+*.apk.idsig
+.cxx/
+captures/
+.externalNativeBuild/
+
+# Xcode / iOS
+*.xcodeproj
+!ios/project.yml
+*.xcworkspace
+DerivedData/
+*.ipa
+*.dSYM.zip
+*.dSYM
+Pods/
+xcuserdata/
+compile_commands.json
+
+# IDE / OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Secrets — never commit tokens or keystores
+GH_TOKEN
+*.env
+secrets/
