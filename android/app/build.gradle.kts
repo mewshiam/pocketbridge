@@ -14,13 +14,36 @@ android {
         minSdk = 31
         targetSdk = 35
         versionCode = 1
-        versionName = "0.1.0"
+        versionName = "1.0.0"
+        // The Rust cdylib ships in jniLibs for these ABIs only; keeps the
+        // APK from carrying empty native dirs for other ABIs.
+        ndk {
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a")
+        }
+    }
+
+    signingConfigs {
+        create("release") {
+            // CI: PB_KEYSTORE_BASE64 + PB_KEYSTORE_PASSWORD secrets; local
+            // fallback: android/keystore/ is gitignored, generate with
+            // keytool (see scripts/make-release-keystore.sh).
+            val keystoreFile = file(
+                System.getenv("PB_KEYSTORE_FILE") ?: "../keystore/pocketbridge-release.keystore"
+            )
+            if (keystoreFile.exists()) {
+                storeFile = keystoreFile
+                storePassword = System.getenv("PB_KEYSTORE_PASSWORD") ?: "pocketbridge-release-2024"
+                keyAlias = System.getenv("PB_KEY_ALIAS") ?: "pocketbridge"
+                keyPassword = System.getenv("PB_KEY_PASSWORD") ?: "pocketbridge-release-2024"
+            }
+        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {

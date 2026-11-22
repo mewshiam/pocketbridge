@@ -47,3 +47,7 @@ compile_commands.json
 GH_TOKEN
 *.env
 secrets/
+
+# Release signing material — never commit
+android/keystore/
+*.keystore

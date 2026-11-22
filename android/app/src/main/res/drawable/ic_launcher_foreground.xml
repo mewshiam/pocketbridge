@@ -1,0 +1,9 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <!-- Two phones joined by an encrypted wave (brand motif) -->
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M30,36h16v36H30zM62,36h16v36H62z"/>
+    <path android:fillColor="#10B981"
+        android:pathData="M48,50h12v8H48z M50,44l4,3l4,-3l-4,-4z M50,64l4,-3l4,3l-4,4z"/>
+</vector>

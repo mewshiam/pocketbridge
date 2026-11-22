@@ -38,6 +38,17 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Install Rust toolchain
+        working-directory: .
+        run: |
+          rustup target add aarch64-linux-android armv7-linux-androideabi
+          cargo install --locked cargo-ndk
+
+      - name: Cross-compile Rust core into jniLibs
+        working-directory: core
+        run: |
+          cargo ndk -t aarch64-linux-android -t armv7-linux-androideabi             -o ../android/app/src/main/jniLibs build --release
+
       - name: Generate Protobuf sources
         shell: bash
         working-directory: .
