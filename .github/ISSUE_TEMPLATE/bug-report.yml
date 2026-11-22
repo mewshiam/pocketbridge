@@ -1,0 +1,17 @@
+name: Bug report
+description: Something is not working
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: app
+    attributes:
+      label: Which app
+      options: ["Android bridge", "iOS client", "Both"]
+    validations: { required: true }
+  - type: textarea
+    id: what
+    attributes: { label: "What happened?" }
+    validations: { required: true }
+  - type: textarea
+    id: logs
+    attributes: { label: "Diagnostics output (Settings > Diagnostics)" }

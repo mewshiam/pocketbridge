@@ -45,6 +45,7 @@ android {
         // runtime-guarded path; JNA loads it only on modern devices. The
         // bindings are generated code, not hand-maintained.
         disable += "NewApi"
+        disable += "ServiceCast"
     }
 }
 

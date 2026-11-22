@@ -60,9 +60,14 @@ object SmsSender {
             val manager = if (subscriptionId != 0 && android.os.Build.VERSION.SDK_INT >= 31) {
                 SmsManager.getSmsManagerForSubscriptionId(subscriptionId)
             } else {
-                @Suppress("DEPRECATION")
-                context?.getSystemService(Context.TELEPHONY_SERVICE) as? SmsManager
-                    ?: SmsManager.getDefault()
+                // Default SIM: SmsManager.getDefault() on API < 31,
+                // getSmsManagerForSubscriptionId(0) on newer APIs.
+                if (android.os.Build.VERSION.SDK_INT >= 31) {
+                    SmsManager.getSmsManagerForSubscriptionId(0)
+                } else {
+                    @Suppress("DEPRECATION")
+                    SmsManager.getDefault()
+                }
             }
             return try {
                 manager.sendTextMessage(address, null, body, null, null)

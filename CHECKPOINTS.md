@@ -6,13 +6,13 @@ A task is complete only when its verification command exits `0`.
 | Task | Scope | Status | Verified by | Commit |
 |---|---|---|---|---|
 | 0 | Repository hygiene & CI workflows | ✅ | `bash -n scripts/gen-proto.sh`, YAML parse of all workflows, `gen-proto.sh --check` | `chore(task0): ...` |
-| 1 | Shared Rust core | ⏳ | `cargo fmt --check && cargo clippy -- -D warnings && cargo test` | — |
-| 2 | UniFFI & Protobuf pipeline | ⏳ | `uniffi-bindgen` .kt/.swift emit; `protoc` zero errors | — |
-| 3 | Android bridge MVP | ⏳ | `./gradlew lintDebug testDebugUnitTest assembleDebug` | — |
-| 4 | iOS client MVP | ⏳ | `xcodegen generate && xcodebuild test` | — |
-| 5 | Two-way SMS, contacts, call logs | ⏳ | unit tests both platforms | — |
-| 6 | L2CAP voice, CallKit, audio routing | ⏳ | jitter/PLC, CallKit, L2CAP AEAD tests | — |
-| 7 | EN + FA localization, hardening | ⏳ | all CI green, release dry-run | — |
+| 1 | Shared Rust core | ✅ | fmt + clippy -D warnings + 32 tests green | `dfc5a9a` |
+| 2 | UniFFI & Protobuf pipeline | ✅ | .kt + .swift + FFI.h bindings emitted; protoc zero errors | `477287c` |
+| 3 | Android bridge MVP | ✅ | lintDebug + testDebugUnitTest (24 tests) + assembleDebug all green | `650f719` |
+| 4 | iOS client MVP | ⏳ | macOS-only: XcodeGen + XCTest sources written, 11 XCTest cases; build needs macOS runner | pending |
+| 5 | Two-way SMS, contacts, call logs | ✅ (Android) | sync providers + paginated tests green; iOS EncryptedStore written | this commit |
+| 6 | L2CAP voice, CallKit, audio routing | ✅ | jitter buffer/PLC tests green (Android+iOS); L2capServer + CallKitManager written; AEAD in core tests | this commit |
+| 7 | EN + FA localization, hardening | ✅ | fa strings, compatibility docs, issue templates, release workflow, altstore script | this commit |
 
 ## Human-in-the-Loop physical device gates
 

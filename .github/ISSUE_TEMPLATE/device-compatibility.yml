@@ -1,0 +1,21 @@
+name: Device compatibility report
+description: Report audio/background behavior on your Android device
+labels: ["device-compat"]
+body:
+  - type: input
+    id: model
+    attributes: { label: "Device model", placeholder: "e.g. Samsung Galaxy S23" }
+    validations: { required: true }
+  - type: input
+    id: rom
+    attributes: { label: "ROM / OS version", placeholder: "One UI 6.1 / Android 14" }
+    validations: { required: true }
+  - type: dropdown
+    id: tier
+    attributes:
+      label: Locked audio strategy (Self-Test Wizard result)
+      options: ["Tier 1 - Native voice capture", "Tier 2 - Bluetooth SCO", "Tier 3 - Shizuku", "Tier 4 - Acoustic fallback"]
+    validations: { required: true }
+  - type: textarea
+    id: notes
+    attributes: { label: "Notes (background survival, dropouts, latency)" }
