@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PocketBridge</string>
+    <string name="channel_name">PocketBridge bridge service</string>
+    <string name="notif_title">PocketBridge is running</string>
+    <string name="notif_text">Your iPhone is connected via encrypted BLE.</string>
+    <string name="pair_qr_prompt">Scan this code with your iPhone</string>
+    <string name="pair_approve">Approve pairing</string>
+    <string name="pair_decline">Decline</string>
+    <string name="status_paired">Paired</string>
+    <string name="status_not_paired">Not paired</string>
+    <string name="status_advertising">Waiting for your iPhone…</string>
+    <string name="battery_optimization_title">Keep PocketBridge alive</string>
+    <string name="battery_optimization_text">Exclude PocketBridge from battery optimization so calls never drop.</string>
+    <string name="selftest_title">Audio self-test</string>
+    <string name="selftest_running">Testing audio paths…</string>
+</resources>

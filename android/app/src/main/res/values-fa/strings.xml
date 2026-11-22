@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Persian (fa) — full RTL mirroring -->
+<resources>
+    <string name="app_name">پاکت‌بریج</string>
+    <string name="channel_name">سرویس پاکت‌بریج</string>
+    <string name="notif_title">پاکت‌بریج در حال اجراست</string>
+    <string name="notif_text">آیفون شما از طریق بلوتوث رمزنگاری‌شده متصل است.</string>
+    <string name="pair_qr_prompt">این کد را با آیفون خود اسکن کنید</string>
+    <string name="pair_approve">تأیید جفت‌شدن</string>
+    <string name="pair_decline">رد کردن</string>
+    <string name="status_paired">جفت‌شده</string>
+    <string name="status_not_paired">جفت‌نشده</string>
+    <string name="status_advertising">در انتظار آیفون شما…</string>
+    <string name="battery_optimization_title">پاکت‌بریج روشن بماند</string>
+    <string name="battery_optimization_text">پاکت‌بریج را از بهینه‌سازی باتری مستثنا کنید تا تماس‌ها قطع نشوند.</string>
+    <string name="selftest_title">آزمون خودکار صدا</string>
+    <string name="selftest_running">در حال آزمون مسیرهای صدا…</string>
+</resources>

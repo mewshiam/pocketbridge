@@ -1,0 +1,44 @@
+name: PocketBridge
+options:
+  bundleIdPrefix: app.pocketbridge
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    TARGETED_DEVICE_FAMILY: "1"
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGNING_REQUIRED: "NO"
+targets:
+  PocketBridge:
+    type: application
+    platform: iOS
+    sources:
+      - path: PocketBridge
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.pocketbridge.client
+        INFOPLIST_KEY_UIBackgroundModes: "bluetooth-central voip audio"
+        INFOPLIST_KEY_NSCameraUsageDescription: "PocketBridge scans QR pairing codes to connect to your Android bridge."
+        INFOPLIST_KEY_NSCameraUsageDescription_ fa: "پاکت‌بریج برای اتصال به پل اندروید شما کد QR جفت‌شدن را اسکن می‌کند."
+        GENERATE_INFOPLIST_FILE: "YES"
+        ENABLE_TESTING_SEARCH_PATHS: "YES"
+    scheme:
+      testTargets:
+        - PocketBridgeTests
+  PocketBridgeTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: PocketBridgeTests
+    dependencies:
+      - target: PocketBridge
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: "YES"
+schemes:
+  PocketBridge:
+    build:
+      targets:
+        PocketBridge: all
