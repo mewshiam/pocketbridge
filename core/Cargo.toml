@@ -1,0 +1,55 @@
+[package]
+name = "pocketbridge_core"
+version = "0.1.0"
+edition = "2021"
+description = "PocketBridge shared core: BLE GATT framing, Noise_XX E2EE, QR pairing, and L2CAP audio AEAD (UniFFI-exported for Android/iOS)"
+license = "GPL-3.0-only"
+repository = "https://github.com/mewshiam/pocketbridge"
+readme = "../README.md"
+publish = false
+
+[lib]
+crate-type = ["lib", "cdylib"]
+name = "pocketbridge_core"
+
+[dependencies]
+# Noise protocol framework (Noise_XX_25519_ChaChaPoly_SHA256)
+snow = "0.9"
+
+# AEAD + key derivation for the L2CAP audio pipeline
+chacha20poly1305 = "0.10"
+hkdf = "0.12"
+sha2 = "0.10"
+
+# Static X25519 identity keys (zeroized on drop)
+x25519-dalek = { version = "2", features = ["static_secrets", "zeroize"] }
+
+# Cryptographic randomness
+rand_core = "0.6"
+
+# Key-material hygiene
+zeroize = { version = "1", features = ["zeroize_derive"] }
+
+# QR pairing URI encoding
+base64 = "0.22"
+
+# Error plumbing shared with the uniffi::Error derive
+thiserror = "1"
+
+# Foreign function bindings for Android (Kotlin) and iOS (Swift)
+uniffi = "0.28"
+
+
+[features]
+# Builds the `uniffi-bindgen` binary next to the library so binding generation
+# always uses the exact uniffi version pinned here (see scripts/build-uniffi.sh).
+bindgen-cli = ["uniffi/cli"]
+
+[[bin]]
+name = "uniffi-bindgen"
+path = "src/bin/uniffi_bindgen.rs"
+required-features = ["bindgen-cli"]
+
+[profile.release]
+lto = "thin"
+strip = true
