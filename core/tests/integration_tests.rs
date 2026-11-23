@@ -24,9 +24,12 @@ fn full_qr_pair_noise_framing_and_audio_roundtrip() {
     assert!(is_pairing_expired(1_000, 1_121));
 
     // 2. Noise_XX handshake (Client -> Bridge -> Client)
-    let mut client_hs =
-        NoiseHandshake::new_initiator(&client_kp.private, parsed.bridge_static_pub, Some(parsed.nonce))
-            .expect("client hs");
+    let mut client_hs = NoiseHandshake::new_initiator(
+        &client_kp.private,
+        parsed.bridge_static_pub,
+        Some(parsed.nonce),
+    )
+    .expect("client hs");
     let mut bridge_hs = NoiseHandshake::new_responder(&bridge_kp.private, None).expect("bridge hs");
 
     let msg1 = client_hs.write_message(&[]).expect("msg1");
@@ -93,6 +96,8 @@ fn wrong_pinned_key_is_rejected() {
     impostor_hs.read_message(&msg1).expect("read msg1");
     let msg2 = impostor_hs.write_message(&[]).expect("msg2");
 
-    let err = client_hs.read_message(&msg2).expect_err("must reject wrong static key");
+    let err = client_hs
+        .read_message(&msg2)
+        .expect_err("must reject wrong static key");
     assert!(matches!(err, CoreError::PeerKeyMismatch));
 }

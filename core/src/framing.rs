@@ -124,7 +124,9 @@ impl FrameReassembler {
         self.evict_expired(now);
 
         if chunk.len() < HEADER_LEN {
-            return Err(CoreError::MalformedFrame("chunk shorter than 6-byte header".into()));
+            return Err(CoreError::MalformedFrame(
+                "chunk shorter than 6-byte header".into(),
+            ));
         }
 
         let flags = chunk[0];
@@ -139,7 +141,9 @@ impl FrameReassembler {
 
         if is_start && is_end {
             if chunk_idx != 0 {
-                return Err(CoreError::MalformedFrame("single-chunk frame must have index 0".into()));
+                return Err(CoreError::MalformedFrame(
+                    "single-chunk frame must have index 0".into(),
+                ));
             }
             if body.len() > MAX_REASSEMBLED_LEN {
                 return Err(CoreError::MessageTooLarge {
@@ -157,7 +161,9 @@ impl FrameReassembler {
 
         if is_start {
             if chunk_idx != 0 {
-                return Err(CoreError::MalformedFrame("START chunk must have index 0".into()));
+                return Err(CoreError::MalformedFrame(
+                    "START chunk must have index 0".into(),
+                ));
             }
             if body.len() > MAX_REASSEMBLED_LEN {
                 return Err(CoreError::MessageTooLarge {
@@ -195,10 +201,11 @@ impl FrameReassembler {
             ));
         }
 
-        if entry.data.len().saturating_add(body.len()) > MAX_REASSEMBLED_LEN {
+        let new_len = entry.data.len().saturating_add(body.len());
+        if new_len > MAX_REASSEMBLED_LEN {
             self.inflight.remove(&msg_id);
             return Err(CoreError::MessageTooLarge {
-                len: (entry.data.len() + body.len()) as u64,
+                len: new_len as u64,
                 max: MAX_REASSEMBLED_LEN as u64,
             });
         }

@@ -61,8 +61,10 @@ pub fn seal_audio_frame(
         .map_err(|_| CoreError::Crypto("audio AEAD encrypt failed".into()))?;
 
     let body_len = 4 + ciphertext.len();
-    let frame_len = u16::try_from(body_len)
-        .map_err(|_| CoreError::MessageTooLarge { len: body_len as u64, max: u16::MAX as u64 })?;
+    let frame_len = u16::try_from(body_len).map_err(|_| CoreError::MessageTooLarge {
+        len: body_len as u64,
+        max: u16::MAX as u64,
+    })?;
 
     let mut out = Vec::with_capacity(2 + body_len);
     out.extend_from_slice(&frame_len.to_be_bytes());
@@ -79,7 +81,9 @@ pub fn open_audio_frame(key: &[u8; 32], wire_frame: &[u8]) -> Result<(u32, Vec<u
 
     let declared_len = u16::from_be_bytes([wire_frame[0], wire_frame[1]]) as usize;
     if wire_frame.len() != 2 + declared_len {
-        return Err(CoreError::MalformedFrame("audio frame length mismatch".into()));
+        return Err(CoreError::MalformedFrame(
+            "audio frame length mismatch".into(),
+        ));
     }
 
     let seq_bytes = [wire_frame[2], wire_frame[3], wire_frame[4], wire_frame[5]];

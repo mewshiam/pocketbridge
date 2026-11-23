@@ -53,9 +53,9 @@ impl PairingPayload {
                     version = Some(parsed);
                 }
                 "pub" => {
-                    let raw = URL_SAFE_NO_PAD
-                        .decode(v)
-                        .map_err(|_| CoreError::InvalidPairingUri("invalid base64url pub".into()))?;
+                    let raw = URL_SAFE_NO_PAD.decode(v).map_err(|_| {
+                        CoreError::InvalidPairingUri("invalid base64url pub".into())
+                    })?;
                     let arr: [u8; 32] = raw.try_into().map_err(|_| {
                         CoreError::InvalidPairingUri("pub key must be 32 bytes".into())
                     })?;
@@ -66,9 +66,9 @@ impl PairingPayload {
                     adv_id = Some(v.to_ascii_lowercase());
                 }
                 "n" => {
-                    let raw = URL_SAFE_NO_PAD
-                        .decode(v)
-                        .map_err(|_| CoreError::InvalidPairingUri("invalid base64url nonce".into()))?;
+                    let raw = URL_SAFE_NO_PAD.decode(v).map_err(|_| {
+                        CoreError::InvalidPairingUri("invalid base64url nonce".into())
+                    })?;
                     let arr: [u8; 16] = raw.try_into().map_err(|_| {
                         CoreError::InvalidPairingUri("nonce must be 16 bytes".into())
                     })?;
