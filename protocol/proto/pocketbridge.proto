@@ -1,0 +1,160 @@
+syntax = "proto3";
+
+package pocketbridge.v1;
+
+option java_package = "app.pocketbridge.protocol.v1";
+option java_multiple_files = true;
+option swift_prefix = "PB";
+
+message Envelope {
+  uint64 id = 1;
+  int64 timestamp_ms = 2;
+
+  oneof payload {
+    Ping ping = 10;
+    Pong pong = 11;
+    DeviceStatus device_status = 12;
+    Ack ack = 13;
+
+    SmsMessage sms_received = 20;
+    SendSmsRequest send_sms_request = 21;
+    SendSmsResult send_sms_result = 22;
+    SmsSyncRequest sms_sync_request = 23;
+    SmsSyncBatch sms_sync_batch = 24;
+
+    CallStateEvent call_state_event = 30;
+    PlaceCallRequest place_call_request = 31;
+    CallActionRequest call_action_request = 32;
+    SendDtmfRequest send_dtmf_request = 33;
+
+    ContactsSyncRequest contacts_sync_request = 40;
+    ContactsSyncBatch contacts_sync_batch = 41;
+    CallLogSyncRequest call_log_sync_request = 42;
+    CallLogSyncBatch call_log_sync_batch = 43;
+  }
+}
+
+message Ping { uint32 seq = 1; }
+message Pong { uint32 seq = 1; }
+message Ack { uint64 ref_envelope_id = 1; bool ok = 2; string error_message = 3; }
+
+message SimInfo {
+  int32 subscription_id = 1;
+  int32 slot_index = 2;
+  string carrier_name = 3;
+  string phone_number = 4;
+  int32 signal_level = 5; // 0 to 4
+}
+
+message DeviceStatus {
+  int32 battery_percent = 1;
+  bool is_charging = 2;
+  repeated SimInfo sims = 3;
+  string active_audio_strategy = 4;
+}
+
+enum SmsDirection {
+  SMS_DIRECTION_UNSPECIFIED = 0;
+  SMS_DIRECTION_INCOMING = 1;
+  SMS_DIRECTION_OUTGOING = 2;
+}
+
+message SmsMessage {
+  string message_id = 1;
+  string thread_id = 2;
+  string address = 3;
+  string body = 4;
+  int64 date_ms = 5;
+  SmsDirection direction = 6;
+  int32 subscription_id = 7;
+  bool is_read = 8;
+}
+
+message SendSmsRequest {
+  string client_temp_id = 1;
+  string address = 2;
+  string body = 3;
+  int32 subscription_id = 4; // 0 = default SIM
+}
+
+message SendSmsResult {
+  string client_temp_id = 1;
+  bool success = 2;
+  string message_id = 3;
+  string error_reason = 4;
+}
+
+message SmsSyncRequest { int64 since_timestamp_ms = 1; uint32 max_messages = 2; }
+message SmsSyncBatch { repeated SmsMessage messages = 1; bool has_more = 2; }
+
+enum CallState {
+  CALL_STATE_UNSPECIFIED = 0;
+  CALL_STATE_DIALING = 1;
+  CALL_STATE_RINGING = 2;
+  CALL_STATE_ACTIVE = 3;
+  CALL_STATE_HOLDING = 4;
+  CALL_STATE_DISCONNECTED = 5;
+}
+
+enum CallDirection {
+  CALL_DIRECTION_UNSPECIFIED = 0;
+  CALL_DIRECTION_INCOMING = 1;
+  CALL_DIRECTION_OUTGOING = 2;
+}
+
+enum CallAction {
+  CALL_ACTION_UNSPECIFIED = 0;
+  CALL_ACTION_ANSWER = 1;
+  CALL_ACTION_REJECT = 2;
+  CALL_ACTION_HANGUP = 3;
+  CALL_ACTION_HOLD = 4;
+  CALL_ACTION_UNHOLD = 5;
+  CALL_ACTION_MUTE = 6;
+  CALL_ACTION_UNMUTE = 7;
+}
+
+message CallStateEvent {
+  string call_id = 1;
+  string phone_number = 2;
+  string contact_name = 3;
+  CallState state = 4;
+  CallDirection direction = 5;
+  int32 subscription_id = 6;
+  uint32 l2cap_psm = 7;
+  string disconnect_reason = 8;
+}
+
+message PlaceCallRequest { string client_call_id = 1; string phone_number = 2; int32 subscription_id = 3; }
+message CallActionRequest { string call_id = 1; CallAction action = 2; }
+message SendDtmfRequest { string call_id = 1; string digit = 2; }
+
+message Contact {
+  string contact_id = 1;
+  string display_name = 2;
+  repeated string phone_numbers = 3;
+  int64 updated_at_ms = 4;
+}
+
+message ContactsSyncRequest { int64 since_timestamp_ms = 1; }
+message ContactsSyncBatch { repeated Contact contacts = 1; uint32 page_index = 2; uint32 total_pages = 3; }
+
+enum CallLogType {
+  CALL_LOG_TYPE_UNSPECIFIED = 0;
+  CALL_LOG_TYPE_INCOMING = 1;
+  CALL_LOG_TYPE_OUTGOING = 2;
+  CALL_LOG_TYPE_MISSED = 3;
+  CALL_LOG_TYPE_REJECTED = 4;
+}
+
+message CallLogEntry {
+  string log_id = 1;
+  string phone_number = 2;
+  string contact_name = 3;
+  CallLogType type = 4;
+  int64 date_ms = 5;
+  uint32 duration_seconds = 6;
+  int32 subscription_id = 7;
+}
+
+message CallLogSyncRequest { int64 since_timestamp_ms = 1; uint32 limit = 2; }
+message CallLogSyncBatch { repeated CallLogEntry entries = 1; bool has_more = 2; }

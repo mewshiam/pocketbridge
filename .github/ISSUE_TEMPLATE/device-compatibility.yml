@@ -1,0 +1,35 @@
+name: Device Compatibility Report
+description: Report Android call audio strategy and background survival results for a specific device.
+labels: ["compatibility"]
+body:
+  - type: input
+    id: device
+    attributes:
+      label: Android Device Model
+      placeholder: e.g., Pixel 8, Galaxy S24, Redmi Note 13
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Android Version / ROM
+      placeholder: e.g., Android 14 / HyperOS 1.0
+    validations:
+      required: true
+  - type: dropdown
+    id: audio_tier
+    attributes:
+      label: Working AudioBridgeStrategy Tier
+      options:
+        - Tier 1 (NativeVoiceCaptureStrategy)
+        - Tier 2 (BluetoothScoBridgeStrategy)
+        - Tier 3 (ShizukuCaptureStrategy)
+        - Tier 4 (AcousticFallbackStrategy)
+        - None working
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Background Survival & Audio Quality Notes
+      placeholder: Latency, echo cancellation quality, battery settings required...

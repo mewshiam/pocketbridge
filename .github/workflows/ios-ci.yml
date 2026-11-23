@@ -1,0 +1,29 @@
+name: iOS Client CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ios/**'
+      - 'protocol/**'
+      - '.github/workflows/ios-ci.yml'
+  pull_request:
+    paths:
+      - 'ios/**'
+      - 'protocol/**'
+
+jobs:
+  ios-test:
+    runs-on: macos-15
+    defaults:
+      run:
+        working-directory: ios
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        run: xcodegen generate
+      - name: Run iOS unit tests
+        run: |
+          xcodebuild test             -scheme PocketBridge             -destination 'platform=iOS Simulator,name=iPhone 16'             CODE_SIGNING_ALLOWED=NO

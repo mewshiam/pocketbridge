@@ -1,0 +1,42 @@
+# OS & Editors
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Secrets & local env
+.env
+.env.*
+*.keystore
+*.jks
+keystore.properties
+
+# Rust / Cargo
+/core/target/
+**/*.rs.bk
+*.profraw
+
+# Generated UniFFI & Protobuf bindings
+android/app/src/main/jniLibs/
+android/app/src/main/java/uniffi/
+android/app/build/generated/
+ios/Generated/
+ios/Frameworks/PocketBridgeCore.xcframework/
+
+# Android / Gradle
+android/.gradle/
+android/local.properties
+android/build/
+android/app/build/
+*.apk
+*.aab
+
+# iOS / Xcode
+ios/*.xcodeproj/
+ios/*.xcworkspace/
+ios/DerivedData/
+ios/build/
+*.ipa
+*.dSYM.zip
+*.dSYM
