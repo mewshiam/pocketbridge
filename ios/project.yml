@@ -1,0 +1,27 @@
+name: PocketBridge
+options:
+  bundleIdPrefix: app.pocketbridge
+  deploymentTarget:
+    iOS: "17.0"
+
+targets:
+  PocketBridge:
+    type: application
+    platform: iOS
+    sources:
+      - path: PocketBridge
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.pocketbridge.client
+        SWIFT_VERSION: "6.0"
+    info:
+      path: PocketBridge/Info.plist
+      properties:
+        CFBundleDisplayName: PocketBridge
+        UIBackgroundModes:
+          - bluetooth-central
+          - voip
+          - audio
+        NSBluetoothAlwaysUsageDescription: PocketBridge uses Bluetooth Low Energy to connect directly to your paired Android Bridge.
+        NSCameraUsageDescription: PocketBridge uses the camera to scan the one-time pairing QR code shown on your Android Bridge.
+        NSMicrophoneUsageDescription: PocketBridge uses the microphone for end-to-end encrypted voice calls bridged from your Android phone.
